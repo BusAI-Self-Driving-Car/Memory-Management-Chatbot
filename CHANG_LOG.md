@@ -81,3 +81,7 @@ With
 which was already in there, they together are concluded as Rule of Five.
 
 Reference: https://en.cppreference.com/w/cpp/language/rule_of_three
+
+Task 3: Exclusive Ownership 2
+
+A vector of unique_ptr applied on _nodes.
