@@ -85,3 +85,11 @@ Reference: https://en.cppreference.com/w/cpp/language/rule_of_three
 Task 3: Exclusive Ownership 2
 
 A vector of unique_ptr applied on _nodes.
+
+Task 4: Moving Smart Pointers
+
+Move Ownership of GraphEdge
+
+```
+std::unique_ptr<GraphEdge> edge = std::make_unique<GraphEdge>(id);
+```
