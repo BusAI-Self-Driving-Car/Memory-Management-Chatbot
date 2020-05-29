@@ -1,8 +1,10 @@
 5/25:
 
 Task 0: bug fix
-    remove "delete _chatBot;". There is no need to over free memory here.
-    The pointer is parsed in and should be deleted in the orginal class where it was created.
+
+remove "delete _chatBot".
+
+There is no need to over free memory here. The pointer is parsed in and should be deleted in the orginal class where it was created.
 
 5/26:
 
@@ -56,3 +58,26 @@ a) std::move will prompt the compiler to invoke move constructor of std::unique_
 b) However, when you performed std::move on _chatLogic, you effectively transferred the ownership of that heap resource to your new return variable. Now the member variable _chatLogic no longer has the ownership of the heap resource. That's why your program was crashing.
 
 When you call get() method on a smart pointer, it returns the address of the memory location in heap that it's managing. So when you return the _chatLogic.get() value, you are just returning a copy of the memory address by value. That way the _chatLogic unique_ptr doesn't get invalidated and the program won't crash.
+
+5/29:
+
+Task 2 : The Rule Of Five
+
+In chatbot.h & chatbot.cpp:
+
+add in:
+
+  - copy constructor
+  - move constructor
+  - copy assignment
+  - move assignment
+
+.
+
+With
+
+  - destructor
+
+which was already in there, they together are concluded as Rule of Five.
+
+Reference: https://en.cppreference.com/w/cpp/language/rule_of_three
