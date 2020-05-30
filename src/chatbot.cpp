@@ -11,6 +11,8 @@
 // constructor WITHOUT memory allocation
 ChatBot::ChatBot()
 {
+    // std::cout << "ChatBot Constructor No Argument" << std::endl;
+
     // invalidate data handles
     _image = nullptr;
     _chatLogic = nullptr;
@@ -46,21 +48,37 @@ ChatBot::~ChatBot()
 ////
 ChatBot::ChatBot(const ChatBot& other) // copy constructor
 : _image(other._image)
-{}
+{
+  std::cout << "ChatBot Copy Constructor" << std::endl;
+
+  _chatLogic = other._chatLogic;
+  _rootNode = other._rootNode;
+}
 
 ChatBot::ChatBot(ChatBot&& other) noexcept // move constructor
 : _image(std::exchange(other._image, nullptr))
-{}
+{
+  std::cout << "ChatBot Move Constructor" << std::endl;
+
+  _chatLogic = std::exchange(other._chatLogic, nullptr);
+  _rootNode = std::exchange(other._rootNode, nullptr);
+}
 
 ChatBot& ChatBot::operator=(const ChatBot& other) // copy assignment
 {
-     return *this = ChatBot(other);
+  std::cout << "ChatBot Copy Assignment Operator" << std::endl;
+
+  return *this = ChatBot(other);
 }
 
 ChatBot& ChatBot::operator=(ChatBot&& other) noexcept // move assignment
 {
-    std::swap(_image, other._image);
-    return *this;
+  std::cout << "ChatBot Move Assignment Operator" << std::endl;
+
+  std::swap(_image, other._image);
+  std::swap(_chatLogic, other._chatLogic);
+  std::swap(_rootNode, other._rootNode);
+  return *this;
 }
 
 ////
@@ -110,6 +128,8 @@ void ChatBot::SetCurrentNode(GraphNode *node)
     std::mt19937 generator(int(std::time(0)));
     std::uniform_int_distribution<int> dis(0, answers.size() - 1);
     std::string answer = answers.at(dis(generator));
+
+    _chatLogic->SetChatbotHandle(this); // update chatBot for chatLogic
 
     // send selected node answer to user
     _chatLogic->SendMessageToUser(answer);
