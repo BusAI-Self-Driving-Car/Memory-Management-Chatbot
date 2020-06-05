@@ -1,18 +1,18 @@
-5/25:
+## 5/25:
 
-Task 0: bug fix
+### Task 0: bug fix
 
-remove "delete _chatBot".
+remove "delete \_chatBot".
 
-There is no need to over free memory here. The pointer is parsed in and should be deleted in the orginal class where it was created.
+There is no need to free memory once again here. The pointer is parsed in and should be deleted in the original class where it was created.
 
-5/26:
+## 5/26:
 
-Task 1: unique_ptr
+### Task 1: unique_ptr
 
-In chatgui.h file, I converted the raw pointer _chatLogic , to std::unique_ptr;
+In chatgui.h file, I converted the raw pointer \_chatLogic , to `std::unique_ptr`;
 
-in chatgui.cpp file also, I changed it to std::uniqu_ptr using std::make_unique and made necessary changes in the destructor.
+in chatgui.cpp file also, I changed it to `std::uniqu_ptr` using `std::make_unique` and made necessary changes in the destructor.
 
 But then I'm getting the following error while compiling:
 
@@ -43,7 +43,7 @@ error: call to implicitly-deleted copy constructor of 'std::unique_ptr<ChatLogic
 1 error generated.
 ```
 
-As a unique_ptr natured, its copy constructor has been deleted implicitely. The value copy behavior like this is forbbiden.
+As a unique_ptr natured, its copy constructor has been deleted implicitly. The value copy behavior like this is forbidden.
 
 There is a good answer about this:
 
@@ -51,17 +51,17 @@ Unique pointers do not have copy constructor or copy assignment operator. They h
 
 In the GetChatLogicHandle function, it was trying to return a unique pointer by value. This prompts the compiler to look for the unique_ptr's copy constructor which we now know is deleted. Hence the error message "use of deleted function" showed up. If you check the function signature in the error message you will see it's the signature of a copy constructor.
 
-When you use std::move operation on _chatLogic to get around the "use of deleted function" error, what's happening is,
+When you use `std::move` operation on \_chatLogic to get around the "use of deleted function" error, what's happening is,
 
-a) std::move will prompt the compiler to invoke move constructor of std::unique_ptr which is available. Hence it won't throw error.
+a) `std::move` will prompt the compiler to invoke move constructor of `std::unique_ptr` which is available. Hence it won't throw error.
 
-b) However, when you performed std::move on _chatLogic, you effectively transferred the ownership of that heap resource to your new return variable. Now the member variable _chatLogic no longer has the ownership of the heap resource. That's why your program was crashing.
+b) However, when you performed `std::move` on \_chatLogic, you effectively transferred the ownership of that heap resource to your new return variable. Now the member variable \_chatLogic no longer has the ownership of the heap resource. That's why your program was crashing.
 
-When you call get() method on a smart pointer, it returns the address of the memory location in heap that it's managing. So when you return the _chatLogic.get() value, you are just returning a copy of the memory address by value. That way the _chatLogic unique_ptr doesn't get invalidated and the program won't crash.
+When you call get() method on a smart pointer, it returns the address of the memory location in heap that it's managing. So when you return the **\_chatLogic.get()** value, you are just returning a copy of the memory address by value. That way the \_chatLogic unique_ptr doesn't get invalidated and the program won't crash.
 
-5/29:
+## 5/29:
 
-Task 2 : The Rule Of Five
+### Task 2 : The Rule Of Five
 
 In chatbot.h & chatbot.cpp:
 
@@ -82,11 +82,11 @@ which was already in there, they together are concluded as Rule of Five.
 
 Reference: https://en.cppreference.com/w/cpp/language/rule_of_three
 
-Task 3: Exclusive Ownership 2
+### Task 3: Exclusive Ownership 2
 
-A vector of unique_ptr applied on _nodes.
+A vector of unique_ptr applied on \_nodes.
 
-Task 4: Moving Smart Pointers
+### Task 4: Moving Smart Pointers
 
 Move Ownership of GraphEdge
 
@@ -94,6 +94,14 @@ Move Ownership of GraphEdge
 std::unique_ptr<GraphEdge> edge = std::make_unique<GraphEdge>(id);
 ```
 
-Task 5: Moving the ChatBot
+### Task 5: Moving the ChatBot
 
-TBD
+1) Initilize in stack:
+
+```
+ChatBot chatBot;
+```
+
+2) `std::move`
+
+`std::move` is used to indicate that an object t may be "moved from", i.e. allowing the efficient transfer of resources from t to another object.

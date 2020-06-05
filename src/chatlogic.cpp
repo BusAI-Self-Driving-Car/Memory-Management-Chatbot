@@ -204,7 +204,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     }
 
     // add chatbot to graph root node
-    _chatBot->SetRootNode(rootNode);
+    // _chatBot->SetRootNode(rootNode);
     //rootNode->MoveChatbotHere(std::move(_chatBot));
 
     // Instead of create chatbot on heap, create a local instance
